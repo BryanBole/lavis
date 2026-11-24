@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lavis — Assistance</title>
+<meta name="description" content="Assistance de l'app Lavis : questions fréquentes et contact.">
+<style>
+  :root { --paper: #F3ECDF; --ink: #2A241D; --ink2: #66594B; --rule: #D8CDBA; --honey: #E2A33E; --rust: #B4532C; }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper: #16130F; --ink: #EFE6D6; --ink2: #A99D8B; --rule: #3A332C; --honey: #F2C674; --rust: #E58D60; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+         font: 17px/1.6 "Iowan Old Style", "Palatino Linotype", Georgia, serif; }
+  main { max-width: 680px; margin: 0 auto; padding: 56px 24px 80px; }
+  .mark { width: 64px; height: 28px; border-radius: 60% 40% 55% 45% / 60% 50% 50% 40%;
+          background: var(--honey); transform: rotate(-8deg); margin-bottom: 24px; opacity: .85; }
+  h1 { font-weight: 300; font-style: italic; font-size: 40px; line-height: 1.1; margin: 0 0 8px; }
+  .caps { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink2); }
+  h2 { font-weight: 400; font-style: italic; font-size: 24px; margin: 40px 0 8px; }
+  details { border-top: 1px solid var(--rule); padding: 14px 0; }
+  details:last-of-type { border-bottom: 1px solid var(--rule); }
+  summary { cursor: pointer; font-size: 18px; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: "＋"; color: var(--ink2); margin-right: 10px; font-size: 15px; }
+  details[open] summary::before { content: "－"; }
+  details p { margin: 10px 0 4px 28px; }
+  .contact { margin-top: 40px; padding: 20px 0; }
+  .button { display: inline-block; margin-top: 8px; padding: 12px 26px; background: var(--ink); color: var(--paper);
+            text-decoration: none; border-radius: 40% 60% 45% 55% / 60% 50% 50% 40%; font-weight: 500; }
+  .muted { color: var(--ink2); }
+  a { color: inherit; }
+  .lead { font-size: 20px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="mark" aria-hidden="true"></div>
+  <p class="caps">Lavis · application iPhone</p>
+  <h1>Assistance</h1>
+  <p class="lead">Lavis vous fait peindre, chaque soir, la couleur de votre journée. Voici les réponses aux questions les plus fréquentes.</p>
+
+  <h2>Questions fréquentes</h2>
+
+  <details>
+    <summary>Comment peindre mon soir ?</summary>
+    <p>Sur l'écran « Ce soir », touchez un godet dans la boîte noire en bas de l'écran, puis glissez le doigt sur la page. Un appui long charge le pinceau et donne une tache douce ; un geste rapide laisse une touche fine et nerveuse. Touchez « Laisser sécher » pour enregistrer.</p>
+  </details>
+
+  <details>
+    <summary>Comment mélanger deux couleurs ?</summary>
+    <p>Touchez un premier godet, puis un second : le mélange apparaît dans le godet de mélange avec un nom. Pour garder un mélange, ouvrez l'onglet « Pigments », touchez +, choisissez deux pigments, nommez-le, puis « Ranger dans la boîte ».</p>
+  </details>
+
+  <details>
+    <summary>Je me suis trompé, comment effacer une touche ?</summary>
+    <p>Tant que la peinture est humide, touchez « Effacer à l'eau » pour retirer la dernière touche. Une fois le soir enregistré, touchez « Repeindre » sur l'écran « Ce soir » pour recommencer.</p>
+  </details>
+
+  <details>
+    <summary>J'ai oublié de peindre un soir. Puis-je le rattraper ?</summary>
+    <p>Oui. Dans « Le carnet », un soir oublié apparaît en pointillés. Touchez-le, puis « Rattraper ce soir ». La touche gardera un fin liseré de crayon pour se souvenir qu'elle a été peinte après coup.</p>
+  </details>
+
+  <details>
+    <summary>Comment retrouver un soir précis ?</summary>
+    <p>Dans « Le carnet », pincez le tableau de l'année pour ouvrir un mois, puis touchez une touche. Sur la page d'un soir, glissez à gauche ou à droite pour passer au soir voisin.</p>
+  </details>
+
+  <details>
+    <summary>Comment changer l'heure ou la phrase du rappel ?</summary>
+    <p>Dans « Le carnet », touchez la roue dentée (Réglages), puis « Le rappel ». Le rappel ne sonne qu'une fois par soir, et se tait si vous avez déjà peint. Si vous ne recevez rien, vérifiez que les notifications de Lavis sont autorisées dans les Réglages de l'iPhone.</p>
+  </details>
+
+  <details>
+    <summary>Comment faire une affiche de mon année ?</summary>
+    <p>Dans « Le carnet », touchez l'icône de partage. Choisissez le format (story, fond d'écran ou A3 à imprimer) et la mise en page, puis « Enregistrer » ou « Partager ». L'A3 est exporté en PDF.</p>
+  </details>
+
+  <details>
+    <summary>Je distingue mal certaines couleurs.</summary>
+    <p>Activez « Trames des pigments » dans Réglages → Accessibilité : chaque pigment reçoit une texture qui lui est propre (hachures, points, ondes…), visible sur les touches et dans la palette. Chaque couleur a aussi un nom, lu par VoiceOver.</p>
+  </details>
+
+  <details>
+    <summary>Mes données sont-elles sauvegardées ?</summary>
+    <p>Tout reste sur votre iPhone, sans compte. Vos données sont incluses dans la sauvegarde habituelle de votre iPhone. Vous pouvez aussi les exporter à tout moment : Réglages → Vos données → Exporter mes données.</p>
+  </details>
+
+  <details>
+    <summary>Comment verrouiller mon carnet ?</summary>
+    <p>Réglages → Le carnet → « Verrouiller avec Face ID ». Lavis vous demandera Face ID (ou le code de l'iPhone) à chaque ouverture.</p>
+  </details>
+
+  <div class="contact">
+    <h2>Une autre question ?</h2>
+    <p>Écrivez-moi, je réponds en général sous quelques jours. Indiquez si possible le modèle de votre iPhone et sa version d'iOS.</p>
+    <a class="button" href="mailto:bryanbole.dev@gmail.com?subject=Lavis%20%E2%80%94%20assistance">Écrire à l'assistance</a>
+    <p class="muted">Bryan Bôle, développeur de Lavis · <a href="privacy.html">Politique de confidentialité</a></p>
+  </div>
+</main>
+</body>
+</html>
