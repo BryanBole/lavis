@@ -1,104 +1,835 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lavis — Assistance</title>
-<meta name="description" content="Assistance de l'app Lavis : questions fréquentes et contact.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lavis, une couleur par soir</title>
+<meta name="description" content="Lavis est un carnet d’aquarelle pour iPhone. Chaque soir, peignez la couleur de votre journée. À la fin de l’année, un tableau qui ne ressemble qu’à vous.">
+<meta property="og:title" content="Lavis, une couleur par soir">
+<meta property="og:description" content="Chaque soir, une touche d’aquarelle. À la fin de l’année, votre tableau.">
+<meta name="theme-color" content="#ECE6D9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#18171C" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" href="assets/newsreader.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-  :root { --paper: #F3ECDF; --ink: #2A241D; --ink2: #66594B; --rule: #D8CDBA; --honey: #E2A33E; --rust: #B4532C; }
-  @media (prefers-color-scheme: dark) {
-    :root { --paper: #16130F; --ink: #EFE6D6; --ink2: #A99D8B; --rule: #3A332C; --honey: #F2C674; --rust: #E58D60; }
+/*
+  Lavis, site vitrine.
+  VOIX     : calme, vouvoiement, phrases du soir. On décrit, on ne vend pas.
+  IDÉE     : le visiteur peint avant de lire. La page se comporte comme une feuille d’aquarelle.
+  IMAGE    : touches d’aquarelle superposées en multiply, grain de papier, annotations manuscrites comme dans l’app.
+  COULEUR  : papier #ECE6D9, encre #2B2620, encre douce #6E655A, filet #D5CBB8, nuit #18171C ; les 15 pigments de l’app.
+  TYPE     : Newsreader (romain + italique) pour tout, Nothing You Could Do pour les notes manuscrites.
+  MISE EN PAGE : aligné à gauche, une colonne de lecture ; les moments forts (l’année, la visite) sont collants au scroll.
+*/
+@font-face{font-family:"Newsreader";src:url(assets/newsreader.woff2) format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Newsreader";src:url(assets/newsreader-italique.woff2) format("woff2");font-weight:200 800;font-style:italic;font-display:swap}
+@font-face{font-family:"Main";src:url(assets/manuscrite.woff2) format("woff2");font-display:swap}
+
+:root{
+  --papier:#ECE6D9; --papier-2:#E3DBCB; --encre:#2B2620; --encre-douce:#6E655A; --filet:#D5CBB8;
+  --miel:#E2A33E; --bouton:#2B2620; --bouton-texte:#F4EFE4;
+  --grain-op:.55; --grain-mode:multiply;
+  --serif:"Newsreader", "Iowan Old Style", Georgia, serif;
+  --main:"Main", "Bradley Hand", cursive;
+  --marge:clamp(20px, 5vw, 72px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --papier:#18171C; --papier-2:#212027; --encre:#ECE5D6; --encre-douce:#A79E90; --filet:#35333B;
+    --bouton:#ECE5D6; --bouton-texte:#18171C; --grain-op:.22; --grain-mode:soft-light; color-scheme:dark;
   }
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--paper); color: var(--ink);
-         font: 17px/1.6 "Iowan Old Style", "Palatino Linotype", Georgia, serif; }
-  main { max-width: 680px; margin: 0 auto; padding: 56px 24px 80px; }
-  .mark { width: 64px; height: 28px; border-radius: 60% 40% 55% 45% / 60% 50% 50% 40%;
-          background: var(--honey); transform: rotate(-8deg); margin-bottom: 24px; opacity: .85; }
-  h1 { font-weight: 300; font-style: italic; font-size: 40px; line-height: 1.1; margin: 0 0 8px; }
-  .caps { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink2); }
-  h2 { font-weight: 400; font-style: italic; font-size: 24px; margin: 40px 0 8px; }
-  details { border-top: 1px solid var(--rule); padding: 14px 0; }
-  details:last-of-type { border-bottom: 1px solid var(--rule); }
-  summary { cursor: pointer; font-size: 18px; list-style: none; }
-  summary::-webkit-details-marker { display: none; }
-  summary::before { content: "＋"; color: var(--ink2); margin-right: 10px; font-size: 15px; }
-  details[open] summary::before { content: "－"; }
-  details p { margin: 10px 0 4px 28px; }
-  .contact { margin-top: 40px; padding: 20px 0; }
-  .button { display: inline-block; margin-top: 8px; padding: 12px 26px; background: var(--ink); color: var(--paper);
-            text-decoration: none; border-radius: 40% 60% 45% 55% / 60% 50% 50% 40%; font-weight: 500; }
-  .muted { color: var(--ink2); }
-  a { color: inherit; }
-  .lead { font-size: 20px; }
+}
+:root[data-theme="dark"]{
+  --papier:#18171C; --papier-2:#212027; --encre:#ECE5D6; --encre-douce:#A79E90; --filet:#35333B;
+  --bouton:#ECE5D6; --bouton-texte:#18171C; --grain-op:.22; --grain-mode:soft-light; color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;background:var(--papier);color:var(--encre);
+  font-family:var(--serif);font-size:clamp(17px,1.15vw,19px);line-height:1.62;font-optical-sizing:auto;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  transition:background-color .5s ease,color .5s ease;
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:var(--grain-op);mix-blend-mode:var(--grain-mode);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .37 0 0 0 0 .3 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--miel);outline-offset:3px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.main{font-family:var(--main);font-weight:400;letter-spacing:.01em}
+
+/* ---------- en-tête ---------- */
+.entete{
+  position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:16px;
+  padding:14px var(--marge);padding-top:max(14px, env(safe-area-inset-top));
+  transition:background-color .4s ease, box-shadow .4s ease;
+}
+.entete.pose{background:color-mix(in srgb, var(--papier) 86%, transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--filet)}
+.marque{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:22px;letter-spacing:-.01em;margin-right:auto}
+.marque img{width:34px;height:34px;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.theme{
+  width:44px;height:44px;border-radius:50%;border:1px solid var(--filet);background:transparent;color:var(--encre);
+  display:grid;place-items:center;cursor:pointer;padding:0;
+}
+.theme svg{width:20px;height:20px}
+.entete .store{transform:translateY(-8px);opacity:0;pointer-events:none;transition:opacity .35s ease, transform .35s ease}
+.entete.pose .store{transform:none;opacity:1;pointer-events:auto}
+
+/* ---------- bouton App Store ---------- */
+.store{
+  display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:8px 22px 8px 18px;border-radius:14px;
+  background:var(--bouton);color:var(--bouton-texte);text-decoration:none;line-height:1.1;
+  transition:transform .2s ease, box-shadow .2s ease;box-shadow:0 1px 0 rgba(0,0,0,.08);
+}
+.store:hover{transform:translateY(-2px);box-shadow:0 10px 24px -12px rgba(30,20,10,.55)}
+.store:active{transform:translateY(0)}
+.store svg{width:22px;height:26px;flex:none}
+.store small{display:block;font-size:12px;opacity:.75;letter-spacing:.01em}
+.store b{display:block;font-weight:500;font-size:19px;letter-spacing:-.01em}
+.store.petit{min-height:44px;padding:6px 16px 6px 13px;border-radius:12px}
+.store.petit svg{width:17px;height:20px}
+.store.petit small{display:none}
+.store.petit b{font-size:16px}
+
+/* ---------- atelier (hero) ---------- */
+.atelier{position:relative;min-height:100svh;overflow:hidden;isolation:isolate}
+.feuille{position:absolute;inset:0;z-index:0;touch-action:none;cursor:crosshair}
+.feuille canvas{width:100%;height:100%;display:block}
+.atelier-grille{
+  position:relative;z-index:2;pointer-events:none;min-height:100svh;
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,5vw,80px);align-items:center;
+  padding:calc(96px + env(safe-area-inset-top)) var(--marge) 64px;
+}
+.atelier-texte{max-width:640px}
+.atelier h1{
+  font-weight:340;font-size:clamp(46px,6.6vw,104px);line-height:.98;letter-spacing:-.028em;margin:0 0 28px;
+  font-variation-settings:"opsz" 72;text-wrap:balance;
+}
+.atelier .chapo{font-size:clamp(19px,1.5vw,23px);line-height:1.5;color:var(--encre-douce);max-width:30em;margin:0 0 36px;text-wrap:pretty}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:18px 24px;pointer-events:auto}
+.actions .note{font-style:italic;color:var(--encre-douce);font-size:16px}
+
+.godets{
+  pointer-events:auto;margin-top:44px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;
+  padding:10px 12px;border-radius:999px;background:color-mix(in srgb, var(--papier) 70%, transparent);
+  border:1px solid var(--filet);width:max-content;max-width:100%;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+}
+.godets[hidden]{display:none}
+.godet{
+  --c:#999;width:36px;height:36px;border-radius:50%;border:0;padding:0;cursor:pointer;position:relative;
+  background:radial-gradient(circle at 38% 34%, color-mix(in srgb, var(--c) 55%, white) 0 18%, var(--c) 62%, color-mix(in srgb, var(--c) 80%, black) 100%);
+  box-shadow:inset 0 -2px 4px rgba(0,0,0,.18), inset 0 2px 2px rgba(255,255,255,.25);
+  transition:transform .18s ease;
+}
+.godet::before{content:"";position:absolute;inset:-4px;border-radius:50%;border:1.5px solid transparent;transition:border-color .2s}
+.godet[aria-pressed="true"]::before,.godet[aria-checked="true"]::before{border-color:var(--encre)}
+.godet:hover{transform:scale(1.08)}
+.godet-nom{font-style:italic;font-size:16px;color:var(--encre-douce);padding:0 4px 0 6px;min-width:8.6em;white-space:nowrap}
+.effacer{
+  pointer-events:auto;border:0;background:none;color:var(--encre-douce);font:inherit;font-size:15px;text-decoration:underline;
+  text-underline-offset:3px;cursor:pointer;min-height:44px;padding:0 10px 0 4px;white-space:nowrap;
+}
+.invitation{
+  position:absolute;z-index:1;pointer-events:none;font-size:clamp(22px,2vw,28px);color:var(--encre-douce);
+  left:clamp(560px,47vw,760px);top:24%;transform:rotate(-5deg);transition:opacity .6s ease;
+}
+.invitation svg{display:block;width:60px;height:52px;margin:4px 0 0 30px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round}
+.atelier.peint .invitation{opacity:0}
+.lecture-geste{
+  position:absolute;z-index:3;pointer-events:none;font-family:var(--main);font-size:22px;color:var(--encre);
+  opacity:0;transform:translate(-50%,-140%) rotate(-3deg);white-space:nowrap;transition:opacity .25s ease;
+}
+.lecture-geste.vue{opacity:.85}
+
+.telephone{
+  pointer-events:auto;position:relative;width:clamp(250px,22vw,330px);aspect-ratio:590/1278;border-radius:15%/7%;
+  padding:3.4%;background:#1c1a1f;box-shadow:0 0 0 1.5px #4a464f inset, 0 40px 80px -40px rgba(40,25,10,.55), 0 18px 30px -24px rgba(40,25,10,.5);
+}
+.telephone .ecran{position:relative;width:100%;height:100%;border-radius:12.5%/5.9%;overflow:hidden;background:var(--papier-2)}
+.telephone .ecran img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .7s ease}
+.telephone .ecran img.vue{opacity:1}
+.atelier .telephone{transform:rotate(2.5deg)}
+
+/* ---------- sections ---------- */
+section{position:relative}
+.bloc{padding:clamp(96px,14vh,170px) var(--marge)}
+h2{font-weight:360;font-size:clamp(36px,4.6vw,68px);line-height:1.02;letter-spacing:-.022em;margin:0 0 22px;text-wrap:balance;font-variation-settings:"opsz" 72}
+.lede{font-size:clamp(19px,1.4vw,22px);color:var(--encre-douce);max-width:32em;margin:0;text-wrap:pretty}
+
+/* ---------- l'année ---------- */
+.annee{height:420vh}
+.annee-colle{position:sticky;top:0;height:100svh;display:grid;grid-template-columns:minmax(260px,.8fr) 1.6fr;gap:clamp(20px,4vw,64px);align-items:center;padding:80px var(--marge) 40px}
+.annee-texte{max-width:430px}
+.annee-mois{font-size:clamp(56px,7vw,112px);font-weight:300;line-height:1;letter-spacing:-.03em;margin:22px 0 6px;font-style:italic;min-height:1.05em}
+.annee-compte{font-family:var(--main);font-size:clamp(22px,2vw,28px);color:var(--encre-douce);margin:0 0 18px;min-height:1.4em}
+.annee-saison{font-size:clamp(19px,1.4vw,22px);line-height:1.5;margin:0;min-height:4.5em;transition:opacity .4s ease}
+.annee-toile{position:relative;height:min(78svh,720px)}
+.annee-toile canvas{width:100%;height:100%;display:block}
+
+/* ---------- mélanges ---------- */
+.melange{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(32px,6vw,96px);align-items:center}
+.choix{margin-top:36px;display:grid;gap:22px}
+.choix fieldset{border:0;margin:0;padding:0}
+.choix legend{font-style:italic;color:var(--encre-douce);font-size:16px;margin-bottom:10px;padding:0}
+.choix .rang{display:flex;flex-wrap:wrap;gap:10px}
+.choix .rang{gap:8px}
+.choix .godet{width:42px;height:42px}
+.melange-toile{position:relative;aspect-ratio:5/4;border-radius:4px}
+.melange-toile canvas{width:100%;height:100%;display:block}
+.etiquette{
+  position:absolute;left:8%;bottom:6%;font-family:var(--main);font-size:clamp(26px,2.6vw,38px);transform:rotate(-3deg);
+  line-height:1.1;
+}
+.etiquette small{display:block;font-family:var(--serif);font-style:italic;font-size:15px;color:var(--encre-douce);transform:rotate(3deg);margin-top:6px}
+
+/* ---------- visite ---------- */
+.visite{display:grid;grid-template-columns:minmax(0,520px) auto;justify-content:space-between;column-gap:clamp(32px,7vw,120px);padding-top:0;padding-right:clamp(20px,9vw,160px)}
+.visite-intro{grid-column:1/-1;max-width:720px;padding-top:clamp(96px,14vh,170px)}
+.etapes{list-style:none;margin:0;padding:0}
+.etape{min-height:62svh;display:flex;flex-direction:column;justify-content:center;max-width:470px;opacity:.28;transition:opacity .5s ease}
+.etape.active{opacity:1}
+.etape h3{font-weight:400;font-size:clamp(28px,2.8vw,42px);line-height:1.1;letter-spacing:-.015em;margin:0 0 14px}
+.etape p{margin:0;color:var(--encre-douce)}
+.etape .main{display:block;margin-top:18px;font-size:22px;color:var(--encre);transform:rotate(-2deg);transform-origin:left}
+.etape img{display:none}
+.visite-colle{position:sticky;top:0;height:100svh;display:flex;align-items:center}
+.visite .telephone{width:clamp(260px,23vw,340px)}
+
+/* ---------- intimité ---------- */
+.intime{background:var(--papier-2);transition:background-color .5s ease}
+.intime-grille{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,96px);align-items:start}
+.promesses{list-style:none;margin:0;padding:0;border-top:1px solid var(--filet)}
+.promesses li{display:grid;grid-template-columns:28px 1fr;gap:14px;padding:20px 0;border-bottom:1px solid var(--filet)}
+.promesses b{font-weight:500;display:block}
+.promesses span{color:var(--encre-douce);font-size:.94em}
+.promesses svg{width:22px;height:22px;margin-top:4px}
+
+/* ---------- final ---------- */
+.final{text-align:left;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(32px,6vw,96px);align-items:center}
+.final h2{font-size:clamp(44px,6vw,96px)}
+.souvenir{position:relative;aspect-ratio:1;max-width:460px;width:100%;justify-self:center}
+.souvenir canvas{width:100%;height:100%;display:block}
+.souvenir .main{position:absolute;left:4%;top:4%;font-size:clamp(22px,2vw,28px);color:var(--encre-douce);transform:rotate(-4deg)}
+.souvenir .date{position:absolute;right:6%;bottom:6%;font-style:italic;color:var(--encre-douce);font-size:16px}
+.icone-finale{width:84px;height:84px;border-radius:19px;box-shadow:0 12px 30px -16px rgba(40,25,10,.6);margin-bottom:28px}
+
+/* ---------- pied ---------- */
+.pied{padding:40px var(--marge) calc(40px + env(safe-area-inset-bottom));border-top:1px solid var(--filet);display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;font-size:15px;color:var(--encre-douce)}
+.pied a{text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
+.pied .droits{margin-right:auto}
+
+/* ---------- apparitions ---------- */
+.apparait{opacity:0;transform:translateY(18px);transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1)}
+.apparait.vue{opacity:1;transform:none}
+.atelier .entree{opacity:0;transform:translateY(14px);animation:entree 1s cubic-bezier(.2,.7,.2,1) forwards}
+.atelier .entree:nth-child(2){animation-delay:.12s}.atelier .entree:nth-child(3){animation-delay:.24s}.atelier .entree:nth-child(4){animation-delay:.36s}
+@keyframes entree{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){
+  .apparait,.atelier .entree{opacity:1;transform:none;animation:none;transition:none}
+  .telephone .ecran img{transition:none}
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 900px){
+  .atelier{min-height:auto}
+  .atelier-grille{grid-template-columns:1fr;min-height:auto;padding-bottom:0;pointer-events:auto}
+  .atelier .telephone{display:none}
+  .feuille{position:relative;inset:auto;height:56svh;margin:8px var(--marge) 0;border-radius:6px;
+    border:1px solid var(--filet);background:color-mix(in srgb, var(--papier-2) 50%, transparent)}
+  .invitation{left:calc(var(--marge) + 24px);top:auto;bottom:calc(56svh - 90px)}
+  .invitation svg{display:none}
+  .godets{margin:16px var(--marge) 40px;width:auto;border-radius:22px;flex-wrap:wrap}
+  .godet-nom{min-width:0;flex:1 1 100%;order:-1;padding:2px 6px}
+  .effacer{margin-left:0}
+  .annee{height:300vh}
+  .annee-colle{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;padding-top:84px;gap:8px}
+  .annee-mois{margin-top:6px;font-size:52px}
+  .annee-saison{min-height:3em;font-size:18px}
+  .annee-toile{height:56svh}
+  .melange,.intime-grille,.final{grid-template-columns:1fr}
+  .visite{grid-template-columns:1fr}
+  .visite-colle{display:none}
+  .etape{min-height:auto;opacity:1;margin:0 0 72px}
+  .etape img{display:block;width:min(78%,300px);margin:28px auto 0;border-radius:28px;box-shadow:0 24px 50px -30px rgba(40,25,10,.6)}
+  .souvenir{max-width:340px}
+}
+@media (max-width: 520px){
+  .actions .note{flex-basis:100%}
+  .entete .store{display:none}
+}
 </style>
 </head>
 <body>
-<main>
-  <div class="mark" aria-hidden="true"></div>
-  <p class="caps">Lavis · application iPhone</p>
-  <h1>Assistance</h1>
-  <p class="lead">Lavis vous fait peindre, chaque soir, la couleur de votre journée. Voici les réponses aux questions les plus fréquentes.</p>
 
-  <h2>Questions fréquentes</h2>
+<header class="entete" id="entete">
+  <a class="marque" href="#haut" aria-label="Lavis, retour en haut"><img src="assets/icone.png" alt="" width="34" height="34"><span>Lavis</span></a>
+  <button class="theme" id="theme" type="button" aria-label="Changer de papier : clair ou sombre">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+  </button>
+  <a class="store petit" data-store href="#"><svg viewBox="0 0 17 20" aria-hidden="true"><path fill="currentColor" d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1ZM11.6 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span><small>Télécharger dans</small><b>l’App Store</b></span></a>
+</header>
 
-  <details>
-    <summary>Comment peindre mon soir ?</summary>
-    <p>Sur l'écran « Ce soir », touchez un godet dans la boîte noire en bas de l'écran, puis glissez le doigt sur la page. Un appui long charge le pinceau et donne une tache douce ; un geste rapide laisse une touche fine et nerveuse. Touchez « Laisser sécher » pour enregistrer.</p>
-  </details>
+<main id="haut">
 
-  <details>
-    <summary>Comment mélanger deux couleurs ?</summary>
-    <p>Touchez un premier godet, puis un second : le mélange apparaît dans le godet de mélange avec un nom. Pour garder un mélange, ouvrez l'onglet « Pigments », touchez +, choisissez deux pigments, nommez-le, puis « Ranger dans la boîte ».</p>
-  </details>
-
-  <details>
-    <summary>Je me suis trompé, comment effacer une touche ?</summary>
-    <p>Tant que la peinture est humide, touchez « Effacer à l'eau » pour retirer la dernière touche. Une fois le soir enregistré, touchez « Repeindre » sur l'écran « Ce soir » pour recommencer.</p>
-  </details>
-
-  <details>
-    <summary>J'ai oublié de peindre un soir. Puis-je le rattraper ?</summary>
-    <p>Oui. Dans « Le carnet », un soir oublié apparaît en pointillés. Touchez-le, puis « Rattraper ce soir ». La touche gardera un fin liseré de crayon pour se souvenir qu'elle a été peinte après coup.</p>
-  </details>
-
-  <details>
-    <summary>Comment retrouver un soir précis ?</summary>
-    <p>Dans « Le carnet », pincez le tableau de l'année pour ouvrir un mois, puis touchez une touche. Sur la page d'un soir, glissez à gauche ou à droite pour passer au soir voisin.</p>
-  </details>
-
-  <details>
-    <summary>Comment changer l'heure ou la phrase du rappel ?</summary>
-    <p>Dans « Le carnet », touchez la roue dentée (Réglages), puis « Le rappel ». Le rappel ne sonne qu'une fois par soir, et se tait si vous avez déjà peint. Si vous ne recevez rien, vérifiez que les notifications de Lavis sont autorisées dans les Réglages de l'iPhone.</p>
-  </details>
-
-  <details>
-    <summary>Comment faire une affiche de mon année ?</summary>
-    <p>Dans « Le carnet », touchez l'icône de partage. Choisissez le format (story, fond d'écran ou A3 à imprimer) et la mise en page, puis « Enregistrer » ou « Partager ». L'A3 est exporté en PDF.</p>
-  </details>
-
-  <details>
-    <summary>Je distingue mal certaines couleurs.</summary>
-    <p>Activez « Trames des pigments » dans Réglages → Accessibilité : chaque pigment reçoit une texture qui lui est propre (hachures, points, ondes…), visible sur les touches et dans la palette. Chaque couleur a aussi un nom, lu par VoiceOver.</p>
-  </details>
-
-  <details>
-    <summary>Mes données sont-elles sauvegardées ?</summary>
-    <p>Tout reste sur votre iPhone, sans compte. Vos données sont incluses dans la sauvegarde habituelle de votre iPhone. Vous pouvez aussi les exporter à tout moment : Réglages → Vos données → Exporter mes données.</p>
-  </details>
-
-  <details>
-    <summary>Comment verrouiller mon carnet ?</summary>
-    <p>Réglages → Le carnet → « Verrouiller avec Face ID ». Lavis vous demandera Face ID (ou le code de l'iPhone) à chaque ouverture.</p>
-  </details>
-
-  <div class="contact">
-    <h2>Une autre question ?</h2>
-    <p>Écrivez-moi, je réponds en général sous quelques jours. Indiquez si possible le modèle de votre iPhone et sa version d'iOS.</p>
-    <a class="button" href="mailto:bryanbole.dev@gmail.com?subject=Lavis%20%E2%80%94%20assistance">Écrire à l'assistance</a>
-    <p class="muted">Bryan Bôle, développeur de Lavis · <a href="privacy.html">Politique de confidentialité</a></p>
+<!-- ================= ATELIER ================= -->
+<section class="atelier" id="atelier" aria-labelledby="titre">
+  <div class="atelier-grille">
+    <div class="atelier-texte">
+      <h1 id="titre" class="entree">De quelle couleur était votre journée&#8239;?</h1>
+      <p class="chapo entree">Lavis est un carnet d’aquarelle pour iPhone. Chaque soir, une seule touche de couleur. À la fin de l’année, un tableau qui ne ressemble qu’à vous.</p>
+      <div class="actions entree">
+        <a class="store" data-store href="#"><svg viewBox="0 0 17 20" aria-hidden="true"><path fill="currentColor" d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1ZM11.6 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span><small>Télécharger dans</small><b>l’App Store</b></span></a>
+        <span class="note">Pour iPhone, sans compte ni publicité.</span>
+      </div>
+      <div class="godets entree desktop-godets" role="group" aria-label="Choisir un pigment pour peindre"></div>
+    </div>
+    <div class="telephone" aria-hidden="true"><div class="ecran"><img class="vue" src="assets/ecran-02.webp" alt=""></div></div>
   </div>
+  <div class="feuille" id="feuille" role="img" aria-label="Feuille d’aquarelle : peignez avec la souris ou le doigt. Restez appuyé pour que la couleur s’étale, faites un geste vif pour une touche nerveuse.">
+    <canvas id="toile-atelier"></canvas>
+  </div>
+  <div class="godets mobile-godets" role="group" aria-label="Choisir un pigment pour peindre" hidden></div>
+  <p class="invitation main" aria-hidden="true">essayez, peignez ici
+    <svg viewBox="0 0 90 50"><path d="M10 4c-6 16 0 32 22 40M24 40l9 5-3-10"/></svg></p>
+  <span class="lecture-geste" id="lecture" aria-hidden="true"></span>
+</section>
+
+<!-- ================= L'ANNÉE ================= -->
+<section class="annee" id="annee" aria-labelledby="titre-annee">
+  <div class="annee-colle">
+    <div class="annee-texte">
+      <h2 id="titre-annee">Un soir après l’autre, l’année se peint.</h2>
+      <p class="annee-mois" id="annee-mois" aria-live="polite">janvier</p>
+      <p class="annee-compte" id="annee-compte">0 soir peint</p>
+      <p class="annee-saison" id="annee-saison">L’hiver se peint en gris fenêtre et en encre de nuit.</p>
+    </div>
+    <div class="annee-toile"><canvas id="toile-annee" role="img" aria-label="Une année d’aquarelle : une touche de couleur par soir, rangée en six bandes de deux mois."></canvas></div>
+  </div>
+</section>
+
+<!-- ================= MÉLANGES ================= -->
+<section class="bloc" id="melanges" aria-labelledby="titre-melange">
+  <div class="melange">
+    <div class="apparait">
+      <h2 id="titre-melange">Deux pigments, un mélange, un nom.</h2>
+      <p class="lede">Certains soirs ne tiennent pas dans une seule couleur. Lavis vous laisse mêler deux pigments sur la feuille, puis baptiser ce qui en sort.</p>
+      <div class="choix">
+        <fieldset><legend>Premier pigment</legend><div class="rang" id="choix-a" role="radiogroup" aria-label="Premier pigment"></div></fieldset>
+        <fieldset><legend>Second pigment</legend><div class="rang" id="choix-b" role="radiogroup" aria-label="Second pigment"></div></fieldset>
+      </div>
+    </div>
+    <div class="melange-toile apparait">
+      <canvas id="toile-melange" role="img" aria-label="Deux touches d’aquarelle qui se mélangent"></canvas>
+      <p class="etiquette" aria-live="polite"><span id="nom-melange">Orage de miel</span><small>Dans l’app, le nom est le vôtre.</small></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VISITE ================= -->
+<section class="bloc visite" id="visite" aria-labelledby="titre-visite">
+  <div class="visite-intro apparait">
+    <h2 id="titre-visite">Trente secondes, le soir venu.</h2>
+    <p class="lede">Pas de journal à remplir, pas de note sur dix. Une touche, parfois un mot, et le carnet se referme.</p>
+  </div>
+  <ol class="etapes" id="etapes">
+    <li class="etape" data-ecran="0"><h3>Une touche, chaque soir</h3><p>Restez appuyé, la couleur s’étale. Faites un geste vif, elle devient nerveuse. Il n’y a pas de bonne réponse, seulement la vôtre.</p><span class="main">un soir lent, un soir pressé</span><img src="assets/ecran-02.webp" alt="Écran Ce soir : une touche d’aquarelle peinte sur la page du jour" loading="lazy"></li>
+    <li class="etape" data-ecran="1"><h3>Ou la couleur d’une photo</h3><p>Choisissez une photo de la journée : Lavis en tire le pigment, vous gardez la main sur la touche.</p><img src="assets/ecran-03.webp" alt="Écran photo : la couleur dominante d’une photo devient un pigment" loading="lazy"></li>
+    <li class="etape" data-ecran="2"><h3>Un mot, si vous voulez</h3><p>Une ligne écrite pour se souvenir de ce qui a coloré le soir. Ou rien du tout, la couleur suffit souvent.</p><img src="assets/ecran-05.webp" alt="Écran d’un soir : la touche et un mot écrit à la main" loading="lazy"></li>
+    <li class="etape" data-ecran="3"><h3>Une page par mois</h3><p>Pincez l’année pour ouvrir un mois, touchez une touche pour retrouver le soir qui va avec.</p><img src="assets/ecran-04.webp" alt="Écran du mois : les touches d’un mois disposées sur une page" loading="lazy"></li>
+    <li class="etape" data-ecran="4"><h3>Votre année en affiche</h3><p>Exportez le tableau de l’année, prêt à imprimer ou à offrir.</p><span class="main">à accrocher en décembre</span><img src="assets/ecran-07.webp" alt="Écran affiche : l’année entière composée en poster" loading="lazy"></li>
+    <li class="etape" data-ecran="5"><h3>Aussi en carnet noir</h3><p>Le mode sombre change de papier : les pigments s’éclaircissent pour rester lisibles à la lumière d’une lampe de chevet.</p><img src="assets/ecran-08.webp" alt="Écran année en mode sombre" loading="lazy"></li>
+  </ol>
+  <div class="visite-colle" aria-hidden="true">
+    <div class="telephone"><div class="ecran" id="ecran-visite">
+      <img class="vue" src="assets/ecran-02.webp" alt=""><img src="assets/ecran-03.webp" alt="" loading="lazy"><img src="assets/ecran-05.webp" alt="" loading="lazy"><img src="assets/ecran-04.webp" alt="" loading="lazy"><img src="assets/ecran-07.webp" alt="" loading="lazy"><img src="assets/ecran-08.webp" alt="" loading="lazy">
+    </div></div>
+  </div>
+</section>
+
+<!-- ================= INTIMITÉ ================= -->
+<section class="bloc intime" id="intimite" aria-labelledby="titre-intime">
+  <div class="intime-grille">
+    <div class="apparait">
+      <h2 id="titre-intime">Rien ne quitte votre iPhone.</h2>
+      <p class="lede">Vos soirs ne regardent que vous. Lavis fonctionne sans serveur : il n’y a nulle part où envoyer vos couleurs, et personne pour les lire.</p>
+    </div>
+    <ul class="promesses apparait">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="9" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/><path d="M3 3l18 18"/></svg><div><b>Aucun compte</b><span>Ouvrez l’app, peignez. Ni adresse e-mail, ni mot de passe.</span></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 5l18 14"/></svg><div><b>Aucune publicité, aucun pistage</b><span>Pas de régie, pas d’outil d’analyse, rien qui vous suive.</span></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><div><b>Verrouillage par Face ID</b><span>Si vous le souhaitez, le carnet s’ouvre avec votre visage seulement.</span></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15Z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><div><b>Un rappel discret</b><span>À l’heure que vous choisissez, une seule notification, préparée sur l’iPhone.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= FINAL ================= -->
+<section class="bloc" id="telecharger" aria-labelledby="titre-final">
+  <div class="final">
+    <div class="apparait">
+      <img class="icone-finale" src="assets/icone.png" alt="Icône de l’app Lavis" width="84" height="84" loading="lazy">
+      <h2 id="titre-final">Ce soir, posez la première touche.</h2>
+      <p class="lede" id="final-texte">Le carnet commence le jour où vous l’ouvrez. Les soirs oubliés gardent leur place, vous pourrez les rattraper.</p>
+      <div class="actions" style="margin-top:36px">
+        <a class="store" data-store href="#"><svg viewBox="0 0 17 20" aria-hidden="true"><path fill="currentColor" d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1ZM11.6 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span><small>Télécharger dans</small><b>l’App Store</b></span></a>
+        <span class="note">iPhone, iOS 17 ou plus récent.</span>
+      </div>
+    </div>
+    <figure class="souvenir apparait" style="margin:0">
+      <canvas id="toile-souvenir" role="img" aria-label="La touche peinte en haut de la page"></canvas>
+      <figcaption><span class="main" id="souvenir-legende">une touche de ce soir</span><span class="date" id="souvenir-date"></span></figcaption>
+    </figure>
+  </div>
+</section>
 </main>
+
+<footer class="pied">
+  <span class="droits">© 2026 Bryan Bôle. Lavis est fait en France.</span>
+  <a href="support.html">Assistance</a>
+  <a href="privacy.html">Confidentialité</a>
+  <a href="mailto:bryanbole.dev@gmail.com">bryanbole.dev@gmail.com</a>
+</footer>
+
+<script>
+(() => {
+"use strict";
+/* Lien App Store : remplacer l’identifiant par l’Apple ID de l’app (App Store Connect, Informations sur l’app). */
+const APP_STORE_URL = "https://apps.apple.com/fr/app/lavis/id0000000000";
+document.querySelectorAll("[data-store]").forEach(a => { a.href = APP_STORE_URL; a.rel = "noopener"; });
+
+const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const DPR = Math.min(2, window.devicePixelRatio || 1);
+
+/* ------------------------------------------------ pigments de l’app */
+const P = [
+  ["Orage tiède","#5D6F82","#93A7BC"],["Matin de miel","#E2A33E","#F2C674"],["Bleu dimanche","#3A6BB0","#86ABE2"],
+  ["Rouille","#B4532C","#E58D60"],["Menthe nerveuse","#5FBF9C","#93E2C3"],["Rose fatigue","#D7858F","#F2B0B8"],
+  ["Vert mousse","#6B8A37","#A9C76D"],["Encre de nuit","#262B4A","#7380C2"],["Ocre lente","#C6923F","#E6B86F"],
+  ["Lilas de pluie","#9886B6","#C5B6E0"],["Corail fou","#E6603F","#FF9175"],["Gris fenêtre","#A39E94","#CBC6BB"],
+  ["Jaune bruyant","#F0C62E","#FFDE5E"],["Vert d'eau","#94C6BE","#BFE6DF"],["Brique","#8C3A2C","#CC735F"]
+];
+const idx = n => P.findIndex(p => p[0] === n);
+const hex = h => [1,3,5].map(i => parseInt(h.slice(i,i+2),16));
+
+function sombre(){
+  const t = document.documentElement.dataset.theme;
+  if (t) return t === "dark";
+  return matchMedia("(prefers-color-scheme: dark)").matches;
+}
+function teinte(pi, t){           // t : 0 = pigment, 1 = variante claire
+  const p = P[pi], a = hex(p[1]), b = hex(p[2]);
+  const base = sombre() ? b : a, alt = sombre() ? hex(p[2]).map(v => Math.min(255, v + 18)) : b;
+  return base.map((v,i) => Math.round(v + (alt[i]-v) * t * 0.55));
+}
+
+function rng(seed){ let s = seed >>> 0; return () => { s = (s + 0x6D2B79F5) >>> 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+/* ------------------------------------------------ moteur aquarelle */
+function prepare(canvas){
+  const ctx = canvas.getContext("2d");
+  const r = canvas.getBoundingClientRect();
+  canvas.width = Math.max(1, Math.round(r.width * DPR));
+  canvas.height = Math.max(1, Math.round(r.height * DPR));
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  return { ctx, w: r.width, h: r.height };
+}
+function mode(ctx){ ctx.globalCompositeOperation = sombre() ? "lighten" : "multiply"; }
+
+/* une touche : polygone déformé, rempli léger, bord un peu plus chargé (le bord sec de l’aquarelle) */
+function tache(ctx, x, y, r, ang, el, rgb, a, R){
+  const n = 9, pts = [];
+  const ca = Math.cos(ang), sa = Math.sin(ang);
+  for (let i = 0; i < n; i++){
+    const t = i / n * Math.PI * 2, rr = r * (1 + (R() - .5) * .65);
+    const px = Math.cos(t) * rr * el, py = Math.sin(t) * rr;
+    pts.push([x + px*ca - py*sa, y + px*sa + py*ca]);
+  }
+  ctx.beginPath();
+  const m = (p, q) => [(p[0]+q[0])/2, (p[1]+q[1])/2];
+  let s = m(pts[n-1], pts[0]); ctx.moveTo(s[0], s[1]);
+  for (let i = 0; i < n; i++){ const q = m(pts[i], pts[(i+1)%n]); ctx.quadraticCurveTo(pts[i][0], pts[i][1], q[0], q[1]); }
+  ctx.closePath();
+  const c = `${rgb[0]},${rgb[1]},${rgb[2]}`;
+  ctx.fillStyle = `rgba(${c},${a})`; ctx.fill();
+  ctx.lineWidth = Math.max(.6, r * .035);
+  ctx.strokeStyle = `rgba(${c},${Math.min(1, a * .9)})`; ctx.stroke();
+}
+
+/* ------------------------------------------------ godets */
+const PALETTE_ATELIER = [1,2,3,4,5,7,9,10,12,14].map(i => i);
+function godet(pi, role){
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "godet"; b.style.setProperty("--c", P[pi][1]);
+  b.setAttribute("aria-label", P[pi][0]); b.dataset.p = pi;
+  if (role === "radio"){ b.setAttribute("role","radio"); b.setAttribute("aria-checked","false"); }
+  else b.setAttribute("aria-pressed","false");
+  return b;
+}
+
+/* ================================================= ATELIER ================================================= */
+const atelier = document.getElementById("atelier");
+const feuille = document.getElementById("feuille");
+const toileA = document.getElementById("toile-atelier");
+const lecture = document.getElementById("lecture");
+const estMobile = () => matchMedia("(max-width: 900px)").matches;
+let A = prepare(toileA);
+let pigment = 1;
+const traces = [];       // touches posées, en coordonnées relatives, pour redessiner (thème, taille)
+const nomsGodets = [];
+
+function construireGodets(conteneur){
+  conteneur.innerHTML = "";
+  const nom = document.createElement("span"); nom.className = "godet-nom"; nom.setAttribute("aria-live","polite");
+  PALETTE_ATELIER.forEach(pi => {
+    const b = godet(pi);
+    b.addEventListener("click", () => choisir(pi));
+    conteneur.appendChild(b);
+  });
+  conteneur.appendChild(nom); nomsGodets.push(nom);
+  const ef = document.createElement("button"); ef.type = "button"; ef.className = "effacer"; ef.textContent = "Effacer la feuille";
+  ef.addEventListener("click", effacer); conteneur.appendChild(ef);
+}
+const gDesk = document.querySelector(".desktop-godets"), gMob = document.querySelector(".mobile-godets");
+construireGodets(gDesk); construireGodets(gMob);
+function placerGodets(){ const m = estMobile(); gDesk.hidden = m; gMob.hidden = !m; }
+placerGodets();
+function choisir(pi){
+  pigment = pi;
+  document.querySelectorAll(".godets .godet").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.p === pi)));
+  nomsGodets.forEach(n => n.textContent = P[pi][0]);
+}
+choisir(1);
+
+function poser(t){ // t : touche relative
+  const ctx = A.ctx; mode(ctx);
+  const R = rng(t.s);
+  tache(ctx, t.x * A.w, t.y * A.h, t.r * A.w, t.ang, t.el, teinte(t.p, t.v), t.a, R);
+}
+function redessinerAtelier(){
+  A = prepare(toileA);
+  A.ctx.clearRect(0,0,A.w,A.h);
+  traces.forEach(poser);
+}
+function effacer(){ traces.length = 0; A.ctx.clearRect(0,0,A.w,A.h); atelier.classList.remove("peint"); dessinerSouvenir(); }
+
+/* geste */
+let enCours = null, graine = 1;
+function ajouter(x, y, r, ang, el, a){
+  if (traces.length > 9000) return;
+  const t = { x: x / A.w, y: y / A.h, r: r / A.w, ang, el, a, p: pigment, v: Math.random(), s: graine++ };
+  traces.push(t); poser(t);
+}
+function local(e){ const r = toileA.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+const base = () => Math.max(18, Math.min(34, A.w * .022));
+
+feuille.addEventListener("pointerdown", e => {
+  if (e.button !== 0) return;
+  feuille.setPointerCapture(e.pointerId);
+  const [x, y] = local(e);
+  enCours = { x, y, t: performance.now(), immobile: performance.now(), v: 0, bloom: 0, dist: 0, dernier: performance.now() };
+  atelier.classList.add("peint");
+  ajouter(x, y, base(), Math.random()*6, 1, .16);
+  if (!reduit) boucle();
+});
+feuille.addEventListener("pointermove", e => {
+  if (!enCours) return;
+  const evts = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+  for (const ev of evts){
+    const [x, y] = local(ev);
+    const now = ev.timeStamp || performance.now();
+    const dx = x - enCours.x, dy = y - enCours.y, d = Math.hypot(dx, dy);
+    if (d < 1) continue;
+    const dt = Math.max(1, now - enCours.dernier);
+    enCours.v = enCours.v * .75 + (d / dt) * .25;
+    const v = Math.min(3, enCours.v);
+    const r = base() * Math.max(.45, 1.35 - v * .45);
+    const pas = Math.max(3, r * .3);
+    const ang = Math.atan2(dy, dx);
+    const n = Math.floor((enCours.dist + d) / pas);
+    for (let i = 1; i <= n; i++){
+      const k = (i * pas - enCours.dist) / d;
+      if (k < 0 || k > 1) continue;
+      ajouter(enCours.x + dx * k + (Math.random()-.5) * v * 3, enCours.y + dy * k + (Math.random()-.5) * v * 3, r, ang, 1 + v * .55, .13 + (v > 1.6 ? .04 : 0));
+      if (v > 1.7 && Math.random() < .18){ // éclaboussures du geste vif
+        const off = r * (1.6 + Math.random() * 2.2), aa = ang + (Math.random() < .5 ? 1 : -1) * (Math.PI/2 + (Math.random()-.5));
+        ajouter(enCours.x + dx * k + Math.cos(aa) * off, enCours.y + dy * k + Math.sin(aa) * off, r * (.12 + Math.random()*.18), 0, 1, .32);
+      }
+    }
+    enCours.dist = (enCours.dist + d) - n * pas;
+    enCours.x = x; enCours.y = y; enCours.dernier = now; enCours.immobile = now; enCours.bloom = 0;
+    montrerLecture(x, y, v > 1.5 ? "un geste vif, une touche nerveuse" : null);
+  }
+});
+function fin(){ if (!enCours) return; enCours = null; lecture.classList.remove("vue"); dessinerSouvenir(); }
+feuille.addEventListener("pointerup", fin); feuille.addEventListener("pointercancel", fin);
+
+function boucle(){
+  if (!enCours) return;
+  const now = performance.now(), calme = now - enCours.immobile;
+  if (calme > 140 && enCours.bloom < 30 && now - (enCours.dernierBloom || 0) > 85){
+    enCours.bloom++; enCours.dernierBloom = now;
+    const r = base() * (1 + enCours.bloom * .1);
+    ajouter(enCours.x + (Math.random()-.5) * r * .3, enCours.y + (Math.random()-.5) * r * .3, r, Math.random() * 6, 1.05, .075);
+    if (enCours.bloom > 3) montrerLecture(enCours.x, enCours.y, "un appui long, la couleur s’étale");
+  }
+  requestAnimationFrame(boucle);
+}
+let lectureTimer;
+function montrerLecture(x, y, texte){
+  if (!texte) return;
+  const r = toileA.getBoundingClientRect(), a = atelier.getBoundingClientRect();
+  lecture.textContent = texte;
+  lecture.style.left = (x + r.left - a.left) + "px"; lecture.style.top = (y + r.top - a.top - 18) + "px";
+  lecture.classList.add("vue");
+  clearTimeout(lectureTimer); lectureTimer = setTimeout(() => lecture.classList.remove("vue"), 1400);
+}
+
+/* ================================================= L’ANNÉE ================================================= */
+const MOIS = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+const MOIS_C = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+const MOIS_P = [
+  ["Orage tiède","Gris fenêtre","Encre de nuit","Bleu dimanche","Lilas de pluie","Jaune bruyant"],
+  ["Orage tiède","Gris fenêtre","Rose fatigue","Bleu dimanche","Encre de nuit","Lilas de pluie"],
+  ["Vert d'eau","Menthe nerveuse","Gris fenêtre","Bleu dimanche","Jaune bruyant","Rose fatigue"],
+  ["Menthe nerveuse","Vert mousse","Rose fatigue","Jaune bruyant","Bleu dimanche","Vert d'eau"],
+  ["Vert mousse","Corail fou","Matin de miel","Menthe nerveuse","Bleu dimanche","Rose fatigue"],
+  ["Matin de miel","Corail fou","Jaune bruyant","Bleu dimanche","Vert d'eau","Vert mousse"],
+  ["Jaune bruyant","Corail fou","Bleu dimanche","Matin de miel","Vert d'eau","Menthe nerveuse"],
+  ["Jaune bruyant","Corail fou","Matin de miel","Rouille","Bleu dimanche","Ocre lente"],
+  ["Ocre lente","Rouille","Vert mousse","Matin de miel","Bleu dimanche","Orage tiède"],
+  ["Rouille","Brique","Ocre lente","Orage tiède","Matin de miel","Encre de nuit"],
+  ["Orage tiède","Brique","Encre de nuit","Gris fenêtre","Rouille","Lilas de pluie"],
+  ["Encre de nuit","Gris fenêtre","Orage tiède","Brique"]
+];
+const SAISONS = [
+  "L’hiver se peint en gris fenêtre et en encre de nuit.",
+  "Puis le vert d’eau revient, par petites touches.",
+  "Les soirs s’allongent, les couleurs s’enhardissent.",
+  "Jaune bruyant, corail fou : l’été ne fait pas dans la nuance.",
+  "La rentrée a un goût d’ocre et de rouille.",
+  "Et l’année se referme sur quelques briques sombres."
+];
+const maintenant = new Date(), ANNEE = maintenant.getFullYear();
+const bissextile = (ANNEE % 4 === 0 && ANNEE % 100 !== 0) || ANNEE % 400 === 0;
+const LONG = [31, bissextile ? 29 : 28, 31,30,31,30,31,31,30,31,30,31];
+const AUJ = Math.floor((maintenant - new Date(ANNEE,0,1)) / 864e5); // index du jour (0 = 1er janvier)
+const JOURS = (() => {
+  const R = rng(7), oublis = new Set(); let tries = 0;
+  while (oublis.size < Math.round(AUJ * .045) && tries++ < 999){ oublis.add(3 + Math.floor(R() * Math.max(1, AUJ - 4))); }
+  const out = []; let prev = null, d = 0;
+  LONG.forEach((l, m) => { for (let k = 0; k < l; k++, d++){
+    if (d > AUJ) { out.push({ m, futur: true }); continue; }
+    if (oublis.has(d)) { out.push({ m, oubli: true }); continue; }
+    const n = (prev && MOIS_P[m].includes(prev) && R() < .35) ? prev : MOIS_P[m][Math.floor(R() * MOIS_P[m].length)];
+    prev = n; out.push({ m, p: idx(n) });
+  }});
+  return out;
+})();
+const DEBUT = []; { let s = 0; LONG.forEach(l => { DEBUT.push(s); s += l; }); }
+
+const toileY = document.getElementById("toile-annee");
+let Y = null, dessinesY = -1;
+function geomJour(i){ // position d’un soir dans le serpentin : 6 rangs de 2 mois
+  const m = JOURS[i].m, rang = Math.floor(m / 2);
+  const debut = DEBUT[rang * 2], fin = (rang * 2 + 2 < 12) ? DEBUT[rang * 2 + 2] : JOURS.length;
+  let u = (i - debut) / Math.max(1, fin - debut - 1);
+  if (rang % 2) u = 1 - u;
+  const mx = Y.w * .05, x = mx + u * (Y.w - mx * 2);
+  const yb = Y.h * (.1 + rang * .158);
+  const y = yb + Math.sin(u * Math.PI * 2.2 + rang * 1.3) * Y.h * .022;
+  return [x, y, rang];
+}
+function couleurEncre(a){ return sombre() ? `rgba(236,229,214,${a})` : `rgba(43,38,32,${a})`; }
+function fondAnnee(){
+  Y = prepare(toileY); dessinesY = -1;
+  const c = Y.ctx; c.clearRect(0,0,Y.w,Y.h);
+  c.globalCompositeOperation = "source-over";
+  c.font = `italic ${Math.max(12, Math.min(16, Y.w * .018))}px Newsreader, Georgia, serif`;
+  c.fillStyle = couleurEncre(.55);
+  for (let m = 0; m < 12; m++){
+    const [x, y] = geomJour(DEBUT[m] + Math.floor(LONG[m] / 2));
+    c.textAlign = "center";
+    c.fillText(MOIS_C[m], x, y + Y.h * .075);
+  }
+  // les soirs à venir : un pointillé, comme dans l’app
+  c.fillStyle = couleurEncre(.25);
+  for (let i = AUJ + 1; i < JOURS.length; i += 3){ const [x, y] = geomJour(i); c.beginPath(); c.arc(x, y, 1.3, 0, 7); c.fill(); }
+}
+function soir(i){
+  const j = JOURS[i], c = Y.ctx, [x, y] = geomJour(i), R = rng(1000 + i);
+  const r = Math.max(7, Y.h * .026);
+  if (j.oubli){ c.globalCompositeOperation = "source-over"; c.setLineDash([2,3]); c.strokeStyle = couleurEncre(.35); c.lineWidth = 1;
+    c.beginPath(); c.arc(x, y, r * .55, 0, 7); c.stroke(); c.setLineDash([]); return; }
+  mode(c);
+  for (let k = 0; k < 3; k++){
+    tache(c, x + (R()-.5) * r * .9, y + (R()-.5) * r * 1.1, r * (.75 + R() * .5), R() * 6, 1 + R() * .5, teinte(j.p, R()), .2, R);
+  }
+}
+function marqueAujourdhui(){
+  const c = Y.ctx, [x, y] = geomJour(AUJ);
+  c.globalCompositeOperation = "source-over"; c.strokeStyle = couleurEncre(.8); c.lineWidth = 1.2;
+  c.beginPath(); c.arc(x, y, Math.max(12, Y.h * .045), 0, 7); c.stroke();
+  c.font = `${Math.max(16, Y.w * .024)}px Main, cursive`; c.fillStyle = couleurEncre(.85); c.textAlign = "center";
+  c.fillText("ce soir", x, y - Math.max(18, Y.h * .058));
+}
+const mY = document.getElementById("annee-mois"), cY = document.getElementById("annee-compte"), sY = document.getElementById("annee-saison");
+let saisonCourante = -1;
+function peindreJusqua(n){
+  if (!Y) fondAnnee();
+  if (n < dessinesY){ fondAnnee(); }
+  for (let i = dessinesY + 1; i <= n; i++) soir(i);
+  if (n >= AUJ && dessinesY < AUJ) marqueAujourdhui();
+  dessinesY = Math.max(dessinesY, n);
+  const m = JOURS[Math.max(0, n)].m;
+  mY.textContent = MOIS[m];
+  let peints = 0; for (let i = 0; i <= n; i++) if (!JOURS[i].oubli && !JOURS[i].futur) peints++;
+  cY.textContent = `${peints} ${peints > 1 ? "soirs peints" : "soir peint"}`;
+  const s = Math.floor(m / 2);
+  if (s !== saisonCourante){ saisonCourante = s; sY.textContent = SAISONS[s]; }
+}
+const secAnnee = document.getElementById("annee");
+function scrollAnnee(){
+  if (reduit) return peindreJusqua(AUJ);
+  const r = secAnnee.getBoundingClientRect(), total = r.height - innerHeight;
+  const p = Math.min(1, Math.max(0, -r.top / (total * .88)));
+  peindreJusqua(Math.round(p * AUJ));
+}
+
+/* ================================================= MÉLANGES ================================================= */
+const toileM = document.getElementById("toile-melange"), nomM = document.getElementById("nom-melange");
+const choixA = document.getElementById("choix-a"), choixB = document.getElementById("choix-b");
+const MEL = [0,1,2,3,4,5,6,7,9,10,12,13];
+let ma = 0, mb = 1, M = null, animM = 0;
+function tete(n){ return n.split(" ")[0]; }
+function queue(n){
+  const parts = n.split(" ");
+  if (parts.length > 1) return parts.slice(1).join(" ");
+  const l = n.toLowerCase(); return /^[aeiouyéèh]/.test(l) ? "d’" + l : "de " + l;
+}
+function nomMelange(a, b){ return a === b ? P[a][0] : (tete(P[a][0]) + " " + queue(P[b][0])).replace("'", "’"); }
+function rangee(cont, cle){
+  MEL.forEach(pi => {
+    const b = godet(pi, "radio");
+    b.addEventListener("click", () => { if (cle === "a") ma = pi; else mb = pi; majMelange(true); });
+    cont.appendChild(b);
+  });
+  cont.addEventListener("keydown", e => { // flèches dans le groupe radio
+    if (!["ArrowRight","ArrowLeft","ArrowDown","ArrowUp"].includes(e.key)) return;
+    e.preventDefault();
+    const btns = [...cont.children], i = btns.indexOf(document.activeElement);
+    const j = (i + (e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : -1) + btns.length) % btns.length;
+    btns[j].focus(); btns[j].click();
+  });
+}
+rangee(choixA, "a"); rangee(choixB, "b");
+function majMelange(anime){
+  [[choixA, ma], [choixB, mb]].forEach(([c, v]) => [...c.children].forEach(b => {
+    const on = +b.dataset.p === v; b.setAttribute("aria-checked", String(on)); b.tabIndex = on ? 0 : -1;
+  }));
+  nomM.textContent = nomMelange(ma, mb);
+  peindreMelange(anime && !reduit);
+}
+function cheminMelange(){
+  const pts = [], pts2 = [];
+  for (let i = 0; i <= 60; i++){
+    const u = i / 60;
+    pts.push([M.w * (.1 + u * .72), M.h * (.36 + Math.sin(u * 3.4) * .1 - u * .04)]);
+    pts2.push([M.w * (.28 + u * .62), M.h * (.72 - u * .5 + Math.sin(u * 4 + 1) * .05)]);
+  }
+  return [pts, pts2];
+}
+function peindreMelange(anime){
+  M = prepare(toileM); const c = M.ctx; c.clearRect(0,0,M.w,M.h);
+  const [c1, c2] = cheminMelange(), R = rng(ma * 31 + mb * 7 + 3);
+  const r = Math.min(M.w, M.h) * .085;
+  const etapes = [];
+  c1.forEach((p, i) => etapes.push([p, ma, r * (.8 + Math.sin(i / 60 * Math.PI) * .5)]));
+  c2.forEach((p, i) => etapes.push([p, mb, r * (.7 + Math.sin(i / 60 * Math.PI) * .55)]));
+  cancelAnimationFrame(animM);
+  let k = 0;
+  const pas = () => {
+    mode(c);
+    const fin = anime ? Math.min(etapes.length, k + 6) : etapes.length;
+    for (; k < fin; k++){
+      const [[x, y], pi, rr] = etapes[k];
+      for (let q = 0; q < 2; q++) tache(c, x + (R()-.5) * rr * .6, y + (R()-.5) * rr * .6, rr * (.8 + R() * .4), R() * 6, 1.1 + R() * .4, teinte(pi, R()), .11, R);
+    }
+    if (k < etapes.length) animM = requestAnimationFrame(pas);
+  };
+  pas();
+}
+
+/* ================================================= VISITE ================================================= */
+const etapes = [...document.querySelectorAll(".etape")], ecrans = [...document.querySelectorAll("#ecran-visite img")];
+const obsEtapes = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  etapes.forEach(s => s.classList.toggle("active", s === e.target));
+  const n = +e.target.dataset.ecran; ecrans.forEach((im, i) => im.classList.toggle("vue", i === n));
+}), { rootMargin: "-45% 0px -45% 0px" });
+etapes.forEach(s => obsEtapes.observe(s));
+etapes[0].classList.add("active");
+
+/* ================================================= SOUVENIR ================================================= */
+const toileS = document.getElementById("toile-souvenir"), legS = document.getElementById("souvenir-legende");
+document.getElementById("souvenir-date").textContent = maintenant.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+function dessinerSouvenir(){
+  const S = prepare(toileS), c = S.ctx; c.clearRect(0,0,S.w,S.h);
+  if (traces.length > 6){
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    traces.forEach(t => { const x = t.x * A.w, y = t.y * A.h, r = t.r * A.w; x0 = Math.min(x0, x - r); y0 = Math.min(y0, y - r); x1 = Math.max(x1, x + r); y1 = Math.max(y1, y + r); });
+    const k = Math.min(S.w * .8 / (x1 - x0), S.h * .62 / (y1 - y0), 3.2);
+    const ox = S.w / 2 - (x0 + x1) / 2 * k, oy = S.h / 2 - (y0 + y1) / 2 * k;
+    mode(c);
+    traces.forEach(t => tache(c, ox + t.x * A.w * k, oy + t.y * A.h * k, t.r * A.w * k, t.ang, t.el, teinte(t.p, t.v), t.a, rng(t.s)));
+    legS.textContent = "votre touche, peinte plus haut";
+  } else {
+    mode(c); const R = rng(42);
+    for (let i = 0; i <= 70; i++){
+      const u = i / 70, x = S.w * (.18 + u * .64), y = S.h * (.52 + Math.sin(u * 3.2) * .08);
+      const r = S.w * .06 * (.6 + Math.sin(u * Math.PI) * .7);
+      for (let q = 0; q < 2; q++) tache(c, x + (R()-.5) * r * .5, y + (R()-.5) * r * .5, r, R() * 6, 1.2, teinte(i < 40 ? 1 : 3, R()), .1, R);
+    }
+    legS.textContent = "une touche de ce soir";
+  }
+}
+
+/* ================================================= thème, apparitions, en-tête ================================================= */
+const btnTheme = document.getElementById("theme");
+function toutRedessiner(){ redessinerAtelier(); fondAnnee(); scrollAnnee(); peindreMelange(false); dessinerSouvenir(); }
+btnTheme.addEventListener("click", () => {
+  document.documentElement.dataset.theme = sombre() ? "light" : "dark";
+  try { localStorage.setItem("lavis-theme", document.documentElement.dataset.theme); } catch(e){}
+  toutRedessiner();
+});
+try { const t = localStorage.getItem("lavis-theme"); if (t) document.documentElement.dataset.theme = t; } catch(e){}
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { if (!document.documentElement.dataset.theme) toutRedessiner(); });
+
+const entete = document.getElementById("entete");
+new IntersectionObserver(([e]) => entete.classList.toggle("pose", !e.isIntersecting), { rootMargin: "-80px 0px 0px 0px" })
+  .observe(document.querySelector(".atelier-texte h1"));
+
+const obsApp = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add("vue"); obsApp.unobserve(e.target); } }), { threshold: .2 });
+document.querySelectorAll(".apparait").forEach(el => obsApp.observe(el));
+
+let ticking = false;
+addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(() => { scrollAnnee(); ticking = false; }); } }, { passive: true });
+let largeur = innerWidth, rt;
+addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => {
+  if (Math.abs(innerWidth - largeur) < 2 && estMobile()) return; // barre d’adresse mobile : ne pas tout repeindre
+  largeur = innerWidth; placerGodets(); toutRedessiner();
+}, 160); });
+
+document.fonts.ready.then(() => { fondAnnee(); scrollAnnee(); });
+fondAnnee(); scrollAnnee(); majMelange(false); dessinerSouvenir();
+if (reduit) peindreJusqua(AUJ);
+})();
+</script>
 </body>
 </html>
