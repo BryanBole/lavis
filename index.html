@@ -247,6 +247,39 @@ h2{font-weight:360;font-size:clamp(36px,4.6vw,68px);line-height:1.02;letter-spac
 .rail .godet[aria-current="step"]{opacity:1;transform:scale(1.5)}
 .rail .godet:hover{transform:scale(1.3);opacity:.8}
 
+/* ---------- widgets ---------- */
+.widgets-grille{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(40px,8vw,140px);align-items:center}
+.widgets-liste{list-style:none;margin:36px 0 0;padding:0;border-top:1px solid var(--filet);max-width:520px}
+.widgets-liste li{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--filet)}
+.widgets-liste .taille{font-family:var(--main);font-size:20px;color:var(--encre-douce)}
+.widgets-liste b{font-weight:500}
+.widgets-liste span:not(.taille){color:var(--encre-douce);font-size:.94em;display:block}
+.widgets .note{margin-top:22px;font-style:italic;color:var(--encre-douce);font-size:16px}
+.accueil{position:relative;width:clamp(270px,24vw,340px);aspect-ratio:590/1278;border-radius:15%/7%;padding:3.4%;background:#1c1a1f;
+  box-shadow:0 0 0 1.5px #4a464f inset,0 40px 80px -40px rgba(40,25,10,.55);transform:rotate(-2deg)}
+.accueil .ecran{position:relative;width:100%;height:100%;border-radius:12.5%/5.9%;overflow:hidden;
+  background:radial-gradient(120% 70% at 20% 0%,#E9A56E 0%,transparent 60%),radial-gradient(120% 80% at 90% 100%,#3C4F7A 0%,transparent 70%),linear-gradient(180deg,#C9876A 0%,#6E6283 55%,#2E3553 100%);
+  display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:min-content;gap:7%;padding:22% 7% 0;align-content:start}
+.accueil .heure{position:absolute;top:5.2%;left:0;right:0;text-align:center;color:#fff;font:600 13px/1 -apple-system,system-ui,sans-serif;opacity:.95}
+.wdg{position:relative;border-radius:22px;background:var(--wdg-fond,#F3ECDF);color:var(--wdg-encre,#2A241D);box-shadow:0 10px 24px -14px rgba(0,0,0,.55);overflow:hidden;
+  transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.wdg canvas{position:absolute;inset:0;width:100%;height:100%}
+.wdg .lab{position:absolute;left:10%;top:9%;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.65;z-index:2}
+.wdg .nom{position:absolute;left:10%;bottom:20%;font-style:italic;font-size:15px;z-index:2;line-height:1}
+.wdg .mot{position:absolute;left:10%;right:8%;bottom:9%;font-size:9px;opacity:.65;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wdg .compte{position:absolute;right:6%;top:9%;font-style:italic;font-size:10px;opacity:.65;z-index:2}
+.wdg-petit{aspect-ratio:1;cursor:pointer;border:0;padding:0;font:inherit;text-align:left}
+.wdg-petit:hover{transform:scale(1.03)}
+.wdg-petit:active{transform:scale(.97)}
+.wdg-moyen{grid-column:1/-1;aspect-ratio:2.13/1}
+.icones{display:grid;grid-template-columns:1fr 1fr;gap:16%;padding:6%;align-content:center}
+.icones span{aspect-ratio:1;border-radius:24%;background:rgba(255,255,255,.22);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.icones img{width:100%;aspect-ratio:1;border-radius:24%;display:block;box-shadow:0 4px 10px -6px rgba(0,0,0,.5)}
+.icones4{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);column-gap:14%;row-gap:14px;padding:0 4%}
+.icones4 span{aspect-ratio:1;border-radius:24%;background:rgba(255,255,255,.2);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.dock{position:absolute;left:5%;right:5%;bottom:3.5%;height:10.5%;border-radius:28px;background:rgba(255,255,255,.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.nuit-wdg .wdg{--wdg-fond:#16130F;--wdg-encre:#EFE6D6}
+
 /* ---------- intimité ---------- */
 .intime{background:var(--papier-2);transition:background-color .5s ease}
 .intime-grille{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,96px);align-items:start}
@@ -316,7 +349,8 @@ h2{font-weight:360;font-size:clamp(36px,4.6vw,68px);line-height:1.02;letter-spac
   .annee-mois{margin-top:6px;font-size:52px}
   .annee-saison{min-height:3em;font-size:18px}
   .annee-toile{height:56svh}
-  .melange,.intime-grille,.final{grid-template-columns:1fr}
+  .melange,.intime-grille,.final,.widgets-grille{grid-template-columns:1fr}
+  .accueil{justify-self:center}
   .visite{grid-template-columns:1fr}
   .visite-colle{display:none}
   .annee-astuce{display:none}
@@ -418,6 +452,41 @@ h2{font-weight:360;font-size:clamp(36px,4.6vw,68px);line-height:1.02;letter-spac
     <div class="telephone" aria-hidden="true"><div class="ecran" id="ecran-visite">
       <img class="vue" src="assets/ecran-02.webp" alt=""><img src="assets/ecran-03.webp" alt="" loading="lazy"><img src="assets/ecran-05.webp" alt="" loading="lazy"><img src="assets/ecran-04.webp" alt="" loading="lazy"><img src="assets/ecran-07.webp" alt="" loading="lazy"><img src="assets/ecran-08.webp" alt="" loading="lazy">
     </div></div>
+  </div>
+</section>
+
+<!-- ================= WIDGETS ================= -->
+<section class="bloc widgets" id="widgets" aria-labelledby="titre-widgets">
+  <div class="widgets-grille">
+    <div class="apparait">
+      <h2 id="titre-widgets">Votre carnet, sur l’écran d’accueil.</h2>
+      <p class="lede">Les widgets Lavis se repeignent à chaque soir peint. Un coup d’œil, et vous savez si la journée a déjà sa couleur.</p>
+      <ul class="widgets-liste">
+        <li><span class="taille">petit</span><div><b>Ce soir</b><span>La touche du soir, ou l’invitation à la peindre. Aussi sur l’écran verrouillé.</span></div></li>
+        <li><span class="taille">grand</span><div><b>Le mois</b><span>La page du mois, avec les soirs oubliés à rattraper.</span></div></li>
+        <li><span class="taille">moyen</span><div><b>L’année</b><span>Votre rivière de touches, qui s’allonge un soir après l’autre.</span></div></li>
+      </ul>
+      <p class="note">Touchez le widget « Ce soir » sur l’écran : il change de couleur.</p>
+    </div>
+    <div class="accueil apparait" id="accueil">
+      <div class="ecran">
+        <span class="heure" aria-hidden="true">21:42</span>
+        <button class="wdg wdg-petit" id="wdg-soir" type="button" aria-label="Widget Ce soir : changer de couleur">
+          <canvas id="toile-wdg-soir"></canvas>
+          <span class="lab">Ce soir</span>
+          <span class="nom" id="wdg-nom">Orage tiède</span>
+          <span class="mot main" id="wdg-mot">la marche sous la pluie</span>
+        </button>
+        <div class="icones" aria-hidden="true"><img src="assets/icone.png" alt=""><span></span><span></span><span></span></div>
+        <div class="wdg wdg-moyen" role="img" aria-label="Widget L’année : une touche de couleur par soir">
+          <canvas id="toile-wdg-annee"></canvas>
+          <span class="lab">2026</span>
+          <span class="compte" id="wdg-compte"></span>
+        </div>
+        <div class="icones4" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <span class="dock" aria-hidden="true"></span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -989,6 +1058,56 @@ const obsEtapes = new IntersectionObserver(es => es.forEach(e => { if (e.isInter
 etapes.forEach(s => obsEtapes.observe(s));
 activer(0);
 
+/* ================================================= WIDGETS ================================================= */
+const accueil = document.getElementById("accueil");
+const toileWS = document.getElementById("toile-wdg-soir"), toileWA = document.getElementById("toile-wdg-annee");
+const wNom = document.getElementById("wdg-nom"), wMot = document.getElementById("wdg-mot");
+const MOTS = ["la marche sous la pluie","un café trop chaud","rien de spécial, et c’était bien","le concert","appel avec maman","nuit courte","enfin le soleil","dîner entre amis"];
+const SOIRS = [0,1,2,3,4,5,9,10,12,13];
+let wIdx = 0, wAnim = 0;
+accueil.querySelector(".wdg-moyen .lab").textContent = String(ANNEE);
+function peindreWidgetSoir(anime){
+  const W = prepare(toileWS), c = W.ctx; c.clearRect(0,0,W.w,W.h);
+  const pi = SOIRS[wIdx % SOIRS.length], R = rng(300 + wIdx * 17);
+  wNom.textContent = P[pi][0].replace("'", "’"); wMot.textContent = MOTS[wIdx % MOTS.length];
+  const pts = []; for (let i = 0; i <= 26; i++){ const u = i / 26; pts.push([W.w * (.16 + u * .68), W.h * (.47 + Math.sin(u * 3.1 + wIdx) * .05)]); }
+  const r = W.h * .13;
+  cancelAnimationFrame(wAnim);
+  let k = 0;
+  const pas = () => {
+    mode(c);
+    const fin = anime && !reduit ? Math.min(pts.length, k + 2) : pts.length;
+    for (; k < fin; k++){
+      const u = k / (pts.length - 1), rr = r * (Math.sin(Math.PI * Math.min(1, .15 + u * .85)) * .55 + .55);
+      for (let q = 0; q < 2; q++) tache(c, pts[k][0] + (R()-.5) * rr * .4, pts[k][1] + (R()-.5) * rr * .4, rr, R() * 6, 1.2, teinte(pi, R()), .14, R);
+    }
+    if (k < pts.length) wAnim = requestAnimationFrame(pas);
+  };
+  pas();
+}
+function peindreWidgetAnnee(){
+  const W = prepare(toileWA), c = W.ctx; c.clearRect(0,0,W.w,W.h);
+  // la rivière de l'app (6 passages de 61 jours), ramenée au cadre du widget
+  const bx = 6, by = 20, bw = 381, bh = 452;
+  const s = Math.min(W.w / bw, (W.h * .92) / bh), dx = (W.w - bw * s) / 2 - bx * s, dy = (W.h - bh * s) / 2 - by * s + W.h * .02;
+  const pt = i => { const r = Math.floor(i / 61), t = (i % 61) / 60; const x = r % 2 === 0 ? 38 + 317 * t : 355 - 317 * t;
+    const y = 40 + r * 82 + 11 * Math.sin(t * Math.PI * 3 + r * 1.3); return [dx + x * s, dy + y * s]; };
+  let peints = 0;
+  JOURS.forEach((j, i) => {
+    const [x, y] = pt(i);
+    if (j.futur){ if (i % 2 === 0){ c.globalCompositeOperation = "source-over"; c.fillStyle = sombre() ? "rgba(236,229,214,.35)" : "rgba(43,38,32,.3)"; c.beginPath(); c.arc(x, y, .9, 0, 7); c.fill(); } return; }
+    if (j.oubli) return;
+    peints++;
+    const R = rng(2000 + i); mode(c);
+    tache(c, x, y, Math.max(2.2, 14 * s), R() * 6, 1.3, teinte(j.p, R()), .32, R);
+  });
+  document.getElementById("wdg-compte").textContent = `${peints} soirs`;
+}
+document.getElementById("wdg-soir").addEventListener("click", () => { wIdx++; petitRetour(); peindreWidgetSoir(true); });
+function themeWidgets(){ accueil.classList.toggle("nuit-wdg", sombre()); }
+let widgetsVus = false;
+new IntersectionObserver(([e]) => { if (e.isIntersecting && !widgetsVus){ widgetsVus = true; themeWidgets(); peindreWidgetSoir(true); peindreWidgetAnnee(); } }, { threshold: .3 }).observe(accueil);
+
 /* ================================================= SOUVENIR ================================================= */
 const toileS = document.getElementById("toile-souvenir"), legS = document.getElementById("souvenir-legende");
 document.getElementById("souvenir-date").textContent = fmtJour.format(maintenant);
@@ -1033,7 +1152,7 @@ new IntersectionObserver(([e]) => {
 
 /* ================================================= thème, en-tête, détails ================================================= */
 const btnTheme = document.getElementById("theme");
-function toutRedessiner(){ redessinerAtelier(); fondAnnee(); scrollAnnee(); peindreMelange(false); dessinerSouvenir(false); souvenirPeint = souvenirSignature; }
+function toutRedessiner(){ redessinerAtelier(); fondAnnee(); scrollAnnee(); peindreMelange(false); dessinerSouvenir(false); souvenirPeint = souvenirSignature; themeWidgets(); if (widgetsVus){ peindreWidgetSoir(false); peindreWidgetAnnee(); } }
 btnTheme.addEventListener("click", () => {
   const changerPapier = () => {
     document.documentElement.dataset.theme = sombre() ? "light" : "dark";
